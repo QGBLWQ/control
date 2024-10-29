@@ -1,4 +1,4 @@
-module github.com/hyperjiang/gin-skeleton
+module github.com/Heath000/fzuSE2024
 
 go 1.18
 

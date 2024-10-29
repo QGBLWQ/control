@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hyperjiang/gin-skeleton/config"
+	"github.com/Heath000/fzuSE2024/config"
 )
 
 // IndexController is the default controller

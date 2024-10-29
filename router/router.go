@@ -3,9 +3,9 @@ package router
 import (
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
-	"github.com/hyperjiang/gin-skeleton/controller"
-	"github.com/hyperjiang/gin-skeleton/middleware"
-	"github.com/hyperjiang/gin-skeleton/model"
+	"github.com/Heath000/fzuSE2024/controller"
+	"github.com/Heath000/fzuSE2024/middleware"
+	"github.com/Heath000/fzuSE2024/model"
 )
 
 // Route makes the routing

@@ -4,7 +4,7 @@ import (
 	"sync"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hyperjiang/gin-skeleton/config"
+	"github.com/Heath000/fzuSE2024/config"
 	"github.com/rs/zerolog/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

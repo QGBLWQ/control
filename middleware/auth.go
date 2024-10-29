@@ -6,7 +6,7 @@ import (
 
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
-	"github.com/hyperjiang/gin-skeleton/model"
+	"github.com/Heath000/fzuSE2024/model"
 )
 
 var authMiddleware *jwt.GinJWTMiddleware
