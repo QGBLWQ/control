@@ -48,4 +48,30 @@ func Route(app *gin.Engine) {
 	{
 		api.GET("/version", indexController.GetVersion)
 	}
+
+	chartController := new(controller.ChartController)
+    app.POST("/chart/pie", chartController.ChartPie)
+    app.POST("/chart/bar", chartController.ChartBar)
+    app.POST("/chart/line", chartController.ChartLine)
+	app.POST("/chart/linebarmixed", chartController.ChartLineBarMixed)
+
+	analysisController := new(controller.AnalysisController)
+    app.POST("/analysis/overall", analysisController.AnalysisOverview)
+    app.POST("/analysis/linear_regression", analysisController.AnalysisLinearRegress)
+	app.POST("/analysis/grey_predict", analysisController.AnalysisGreyPredict)
+	app.POST("/analysis/ARIMA", analysisController.AnalysisARIMA)
+	app.POST("/analysis/BP", analysisController.AnalysisBP)
+
+	dataProcessingController := new(controller.DataProcessingController)
+    app.POST("/data/standardize", dataProcessingController.DataStandalize)
+    app.POST("/data/outliers", dataProcessingController.DataOutliersHandle)
+	app.POST("/data/outliers", dataProcessingController.DataMissingValuesHandle)
+	app.POST("/data/outliers", dataProcessingController.DataFeatureVariance)
+	app.POST("/data/outliers", dataProcessingController.DataFeatureCorrelation)
+	app.POST("/data/outliers", dataProcessingController.DataFeatureChiSquare)
+
+	queryController := new(controller.QueryController)
+    app.GET("/query/Region", queryController.QueryRegion)
+    app.GET("/query/Category", queryController.QueryCategory)
+	app.GET("/query/BasicTable", queryController.QueryBasicTable)
 }
