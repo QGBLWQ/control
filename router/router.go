@@ -1,11 +1,11 @@
 package router
 
 import (
-	jwt "github.com/appleboy/gin-jwt/v2"
-	"github.com/gin-gonic/gin"
 	"github.com/Heath000/fzuSE2024/controller"
 	"github.com/Heath000/fzuSE2024/middleware"
 	"github.com/Heath000/fzuSE2024/model"
+	jwt "github.com/appleboy/gin-jwt/v2"
+	"github.com/gin-gonic/gin"
 )
 
 // Route makes the routing
@@ -50,28 +50,41 @@ func Route(app *gin.Engine) {
 	}
 
 	chartController := new(controller.ChartController)
-    app.POST("/chart/pie", chartController.ChartPie)
-    app.POST("/chart/bar", chartController.ChartBar)
-    app.POST("/chart/line", chartController.ChartLine)
-	app.POST("/chart/linebarmixed", chartController.ChartLineBarMixed)
+	chart := app.Group("/chart")
+	{
+		chart.POST("/pie", chartController.ChartPie)
+		chart.POST("/bar", chartController.ChartBar)
+		chart.POST("/line", chartController.ChartLine)
+		chart.POST("/linebarmixed", chartController.ChartLineBarMixed)
+	}
 
 	analysisController := new(controller.AnalysisController)
-    app.POST("/analysis/overall", analysisController.AnalysisOverview)
-    app.POST("/analysis/linear_regression", analysisController.AnalysisLinearRegress)
-	app.POST("/analysis/grey_predict", analysisController.AnalysisGreyPredict)
-	app.POST("/analysis/ARIMA", analysisController.AnalysisARIMA)
-	app.POST("/analysis/BP", analysisController.AnalysisBP)
+	analysis := app.Group("/analysis")
+	{
+		analysis.POST("/overall", analysisController.AnalysisOverview)
+		analysis.POST("/linear_regression", analysisController.AnalysisLinearRegress)
+		analysis.POST("/grey_predict", analysisController.AnalysisGreyPredict)
+		analysis.POST("/ARIMA", analysisController.AnalysisARIMA)
+		analysis.POST("/BP", analysisController.AnalysisBP)
+	}
 
 	dataProcessingController := new(controller.DataProcessingController)
-    app.POST("/data/standardize", dataProcessingController.DataStandalize)
-    app.POST("/data/outliers", dataProcessingController.DataOutliersHandle)
-	app.POST("/data/outliers", dataProcessingController.DataMissingValuesHandle)
-	app.POST("/data/outliers", dataProcessingController.DataFeatureVariance)
-	app.POST("/data/outliers", dataProcessingController.DataFeatureCorrelation)
-	app.POST("/data/outliers", dataProcessingController.DataFeatureChiSquare)
+	data := app.Group("/data")
+	{
+		data.POST("/standardize", dataProcessingController.DataStandalize)
+		data.POST("/outliers", dataProcessingController.DataOutliersHandle)
+		data.POST("/missing", dataProcessingController.DataMissingValuesHandle)
+		data.POST("/feature/variance", dataProcessingController.DataFeatureVariance)
+		data.POST("/feature/correlation", dataProcessingController.DataFeatureCorrelation)
+		data.POST("/feature/chi_square", dataProcessingController.DataFeatureChiSquare)
+	}
 
 	queryController := new(controller.QueryController)
-    app.GET("/query/Region", queryController.QueryRegion)
-    app.GET("/query/Category", queryController.QueryCategory)
-	app.GET("/query/BasicTable", queryController.QueryBasicTable)
+	query := app.Group("/query")
+	{
+		query.GET("/region", queryController.QueryRegion)
+		query.GET("/category", queryController.QueryCategory)
+		query.GET("/basic_table", queryController.QueryBasicTable)
+	}
+
 }
