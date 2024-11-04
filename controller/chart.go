@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 )
 
 type ChartController struct{}
@@ -32,9 +33,14 @@ func (ctrl *ChartController) ChartPie(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
 	// Call the Python script
-	cmd := exec.Command("python", "D:\\code\\se\\fzuSE2024\\controller\\draw_pie_chart.py", string(paramsJSON))
+	cwd, err := os.Getwd()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	scriptPath := filepath.Join(cwd, "controller", "draw_pie_chart.py")
+	cmd := exec.Command("python", scriptPath, string(paramsJSON))
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out
@@ -81,7 +87,13 @@ func (ctrl *ChartController) ChartLine(c *gin.Context) {
 	}
 
 	// Call the Python script
-	cmd := exec.Command("python", "D:\\code\\se\\fzuSE2024\\controller\\draw_line_chart.py", string(paramsJSON))
+	cwd, err := os.Getwd()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	scriptPath := filepath.Join(cwd, "controller", "draw_line_chart.py")
+	cmd := exec.Command("python", scriptPath, string(paramsJSON))
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out
@@ -128,7 +140,13 @@ func (ctrl *ChartController) ChartBar(c *gin.Context) {
 	}
 
 	// Call the Python script
-	cmd := exec.Command("python", "D:\\code\\se\\fzuSE2024\\controller\\draw_bar_chart.py", string(paramsJSON))
+	cwd, err := os.Getwd()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	scriptPath := filepath.Join(cwd, "controller", "draw_bar_chart.py")
+	cmd := exec.Command("python", scriptPath, string(paramsJSON))
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out
@@ -179,7 +197,13 @@ func (ctrl *ChartController) ChartLineBarMixed(c *gin.Context) {
 	}
 
 	// Call the Python script
-	cmd := exec.Command("python", "D:\\code\\se\\fzuSE2024\\controller\\draw_line_bar_mixed_chart.py", string(paramsJSON))
+	cwd, err := os.Getwd()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	scriptPath := filepath.Join(cwd, "controller", "draw_line_bar_mixed_chart.py")
+	cmd := exec.Command("python", scriptPath, string(paramsJSON))
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out

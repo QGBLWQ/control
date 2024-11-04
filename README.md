@@ -6,7 +6,7 @@
 ### 饼图
 1. Set Request Type and URL:  
 * Request Type: `POST`
-* URL: `http://localhost/chart/pie`
+* URL: `http://localhost:8080/chart/pie`
 2. Set Request Headers:  
 * Add a `Content-Type` header with the value `application/json`
 3. Set Request Body:  
@@ -27,7 +27,7 @@ Enter the JSON data in the request body, for example:
 ### 折线图
 1. Set Request Type and URL:
 * Request Type: `POST`
-* URL: `http://localhost/chart/line`
+* URL: `http://localhost:8080/chart/line`
 2. Set Request Headers:
 * Add a `Content-Type` header with the value `application/json`
 3. Set Request Body:
@@ -49,7 +49,7 @@ Enter the JSON data in the request body, for example:
 ### 柱状图
 1. Set Request Type and URL:
 * Request Type: `POST`
-* URL: `http://localhost/chart/bar`
+* URL: `http://localhost:8080/chart/bar`
 2. Set Request Headers:
 * Add a `Content-Type` header with the value `application/json`
 3. Set Request Body:
@@ -71,7 +71,7 @@ Enter the JSON data in the request body, for example:
 ### 折线柱状混合图
 1. Set Request Type and URL:
 * Request Type: `POST`
-* URL: `http://localhost/chart/linebarmixed`
+* URL: `http://localhost:8080/chart/linebarmixed`
 2. Set Request Headers:
 * Add a `Content-Type` header with the value `application/json`
 3. Set Request Body:
