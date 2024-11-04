@@ -107,15 +107,101 @@ func (ctrl *ChartController) ChartLine(c *gin.Context) {
 		"image":   base64Image,
 	})
 }
-func (ctrl *ChartController) ChartBar(c *gin.Context) { //柱状图图生成
+func (ctrl *ChartController) ChartBar(c *gin.Context) {
+	var params struct {
+		Title string `json:"title"`
+		Data  []struct {
+			Label string  `json:"label"`
+			Value float64 `json:"value"`
+		} `json:"data"`
+	}
+	if err := c.ShouldBindJSON(&params); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Convert params to JSON string
+	paramsJSON, err := json.Marshal(params)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Call the Python script
+	cmd := exec.Command("python", "D:\\code\\se\\fzuSE2024\\controller\\draw_bar_chart.py", string(paramsJSON))
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+	if err := cmd.Run(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": stderr.String()})
+		return
+	}
+
+	// Read the generated PNG file
+	pngData, err := os.ReadFile("bar_chart.png")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Encode PNG to Base64
+	base64Image := base64.StdEncoding.EncodeToString(pngData)
+
+	// Return Base64 image as JSON
 	c.JSON(http.StatusOK, gin.H{
 		"message": "success",
-		"data":    "test",
+		"image":   base64Image,
 	})
 }
-func (ctrl *ChartController) ChartLineBarMixed(c *gin.Context) { //折柱混合图生成
+func (ctrl *ChartController) ChartLineBarMixed(c *gin.Context) {
+	var params struct {
+		Title    string `json:"title"`
+		LineData []struct {
+			X float64 `json:"x"`
+			Y float64 `json:"y"`
+		} `json:"line_data"`
+		BarData []struct {
+			Label string  `json:"label"`
+			Value float64 `json:"value"`
+		} `json:"bar_data"`
+	}
+	if err := c.ShouldBindJSON(&params); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Convert params to JSON string
+	paramsJSON, err := json.Marshal(params)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Call the Python script
+	cmd := exec.Command("python", "D:\\code\\se\\fzuSE2024\\controller\\draw_line_bar_mixed_chart.py", string(paramsJSON))
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+	if err := cmd.Run(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": stderr.String()})
+		return
+	}
+
+	// Read the generated PNG file
+	pngData, err := os.ReadFile("line_bar_mixed_chart.png")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Encode PNG to Base64
+	base64Image := base64.StdEncoding.EncodeToString(pngData)
+
+	// Return Base64 image as JSON
 	c.JSON(http.StatusOK, gin.H{
 		"message": "success",
-		"data":    "test",
+		"image":   base64Image,
 	})
 }

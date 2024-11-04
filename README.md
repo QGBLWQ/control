@@ -47,3 +47,50 @@ Enter the JSON data in the request body, for example:
 * Click the Send button to send the request
 
 ### 柱状图
+1. Set Request Type and URL:
+* Request Type: `POST`
+* URL: `http://localhost/chart/bar`
+2. Set Request Headers:
+* Add a `Content-Type` header with the value `application/json`
+3. Set Request Body:
+* Select the `raw` option and set the type to `JSON`
+  Enter the JSON data in the request body, for example:
+```json
+{
+  "title": "Sample Bar Chart",
+  "data": [
+    {"label": "A", "value": 10},
+    {"label": "B", "value": 20},
+    {"label": "C", "value": 30}
+  ]
+}
+```
+4. Send Request:
+* Click the Send button to send the request
+
+### 折线柱状混合图
+1. Set Request Type and URL:
+* Request Type: `POST`
+* URL: `http://localhost/chart/linebarmixed`
+2. Set Request Headers:
+* Add a `Content-Type` header with the value `application/json`
+3. Set Request Body:
+* Select the `raw` option and set the type to `JSON`
+  Enter the JSON data in the request body, for example:
+```json
+{
+  "title": "Sample Mixed Chart",
+  "line_data": [
+    {"x": 1, "y": 10},
+    {"x": 2, "y": 20},
+    {"x": 3, "y": 30}
+  ],
+  "bar_data": [
+    {"label": "A", "value": 10},
+    {"label": "B", "value": 20},
+    {"label": "C", "value": 30}
+  ]
+}
+```
+4. Send Request:
+* Click the Send button to send the request
