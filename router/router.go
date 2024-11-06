@@ -6,10 +6,12 @@ import (
 	"github.com/Heath000/fzuSE2024/model"
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
+	"fmt"
 )
 
 // Route makes the routing
 func Route(app *gin.Engine) {
+	fmt.Println("Routes are registered")
 	indexController := new(controller.IndexController)
 	app.GET(
 		"/", indexController.GetIndex,
