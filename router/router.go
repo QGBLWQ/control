@@ -1,12 +1,13 @@
 package router
 
 import (
+	"fmt"
+
 	"github.com/Heath000/fzuSE2024/controller"
 	"github.com/Heath000/fzuSE2024/middleware"
 	"github.com/Heath000/fzuSE2024/model"
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
-	"fmt"
 )
 
 // Route makes the routing
@@ -71,7 +72,7 @@ func Route(app *gin.Engine) {
 	}
 
 	dataProcessingController := new(controller.DataProcessingController)
-	data := app.Group("/data")
+	data := app.Group("/dataProcessing")
 	{
 		data.POST("/standardize", dataProcessingController.DataStandalize)
 		data.POST("/outliers", dataProcessingController.DataOutliersHandle)
@@ -84,9 +85,12 @@ func Route(app *gin.Engine) {
 	queryController := new(controller.QueryController)
 	query := app.Group("/query")
 	{
-		query.GET("/region", queryController.QueryRegion)
-		query.GET("/category", queryController.QueryCategory)
-		query.GET("/basic_table", queryController.QueryBasicTable)
+		query.POST("/region", queryController.QueryRegions)
+		query.POST("/top_category", queryController.QueryTopCategories)
+		query.POST("/sub_category", queryController.QuerySubCategories)
+		query.POST("/available_year", queryController.QueryAvailableYears)
+		query.POST("/data", queryController.QueryData)
+
 	}
 
 }

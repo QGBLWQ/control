@@ -13,6 +13,8 @@ import (
 
 func main() {
 
+
+
 	addr := flag.String("addr", config.Server.Addr, "Address to listen and serve")
 	flag.Parse()
 
@@ -20,9 +22,10 @@ func main() {
 		gin.DisableConsoleColor()
 	}
 
+
 	app := gin.Default()
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://127.0.0.1:5500"}, // 前端的地址
+		AllowOrigins:     []string{"http://127.0.0.1:5500", "http://localhost:5500"}, // 前端的地址
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"}, // 身份验证需要 Authorization 头
 		ExposeHeaders:    []string{"Content-Length", "Authorization"},         // 允许前端获取这些响应头
