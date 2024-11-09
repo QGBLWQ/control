@@ -8,27 +8,27 @@ import (
 type Province struct {
 	ProvinceID   string   `gorm:"type:char(10);primaryKey" json:"province_id"`        // 省份ID
 	ProvinceName string   `gorm:"type:char(20);not null;unique" json:"province_name"` // 省份名称，非空且唯一
-	Regions      []Region `gorm:"foreignKey:ProvinceID" json:"regions"`               // 与地区的关系，一对多
+	Regions      []Region `gorm:"foreignKey:ProvinceID" json:"-"`                     // 与地区的关系，一对多
 }
 
 // Region 表结构
 type Region struct {
-	RegionID   string     `gorm:"type:char(10);primaryKey" json:"region_id"`                         // 地区ID
-	RegionName string     `gorm:"type:char(20);not null" json:"region_name"`                         // 地区名称，非空
-	ProvinceID string     `gorm:"type:char(10);not null" json:"province_id"`                         // 省份ID，外键关联到省份表
-	Province   Province   `gorm:"foreignKey:ProvinceID;constraint:OnDelete:CASCADE" json:"province"` // 外键设置级联删除
-	Categories []Category `gorm:"foreignKey:RegionID" json:"categories"`                             // 与类别的关系，一对多
+	RegionID   string     `gorm:"type:char(10);primaryKey" json:"region_id"`                  // 地区ID
+	RegionName string     `gorm:"type:char(20);not null" json:"region_name"`                  // 地区名称，非空
+	ProvinceID string     `gorm:"type:char(10);not null" json:"province_id"`                  // 省份ID，外键关联到省份表
+	Province   Province   `gorm:"foreignKey:ProvinceID;constraint:OnDelete:CASCADE" json:"-"` // 外键设置级联删除
+	Categories []Category `gorm:"foreignKey:RegionID" json:"-"`                               // 与类别的关系，一对多
 }
 
 // Category 表结构
 type Category struct {
-	CategoryID   string    `gorm:"type:char(10);primaryKey" json:"category_id"`                    // 类别ID
-	ParentID     *string   `gorm:"type:char(10)" json:"parent_id"`                                 // 父类别ID，允许为空
-	CategoryName string    `gorm:"type:char(20);not null" json:"category_name"`                    // 类别名称，非空
-	Level        int       `gorm:"type:int" json:"level"`                                          // 类别层级
-	RegionID     string    `gorm:"type:char(10);not null" json:"region_id"`                        // 地区ID，外键关联到地区表
-	Region       Region    `gorm:"foreignKey:RegionID;constraint:OnDelete:CASCADE" json:"region"`  // 外键设置级联删除
-	Parent       *Category `gorm:"foreignKey:ParentID;constraint:OnDelete:SET NULL" json:"parent"` // 自关联，设置父类，删除置空
+	CategoryID   string    `gorm:"type:char(10);primaryKey" json:"category_id"`               // 类别ID
+	ParentID     *string   `gorm:"type:char(10)" json:"parent_id"`                            // 父类别ID，允许为空
+	CategoryName string    `gorm:"type:char(20);not null" json:"category_name"`               // 类别名称，非空
+	Level        int       `gorm:"type:int" json:"level"`                                     // 类别层级
+	RegionID     string    `gorm:"type:char(10);not null" json:"region_id"`                   // 地区ID，外键关联到地区表
+	Region       Region    `gorm:"foreignKey:RegionID;constraint:OnDelete:CASCADE" json:"-"`  // 外键设置级联删除
+	Parent       *Category `gorm:"foreignKey:ParentID;constraint:OnDelete:SET NULL" json:"-"` // 自关联，设置父类，删除置空
 }
 
 // BasicData 表结构
