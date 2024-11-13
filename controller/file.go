@@ -82,7 +82,8 @@ func (f *FileController) GetFile(c *gin.Context) {
 		return
 	}
 
-	// 真正地获取服务器器里的文件
+	// 真正地获取服务器里的文件，然后发回****************
+
 	c.JSON(http.StatusOK, gin.H{
 		"file": file,
 	})
@@ -161,8 +162,7 @@ func (f *FileController) UploadFile(c *gin.Context) {
 		return
 	}
 
-	// 将文件保存到指定路径
-	// ********************** 代码写在这里
+	// 真正地将文件保存到服务器的指定路径********************** 代码写在这里
 
 	// 在数据库中保存文件记录
 	fileInfo := model.File{
