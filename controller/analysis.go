@@ -290,3 +290,15 @@ func (ctrl *AnalysisController) AnalysisOverview(c *gin.Context) {
 		"data":    stats,
 	})
 }
+func (ctrl *AnalysisController) AnalysisSVM(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "success",
+		"data":    "test",
+	})
+}
+func (ctrl *AnalysisController) AnalysisRandomForest(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "success",
+		"data":    "test",
+	})
+}

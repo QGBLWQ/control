@@ -4,9 +4,9 @@ import (
 	"log"
 	"time"
 
+	"github.com/Heath000/fzuSE2024/model"
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
-	"github.com/Heath000/fzuSE2024/model"
 )
 
 var authMiddleware *jwt.GinJWTMiddleware
@@ -35,15 +35,18 @@ func init() {
 		PayloadFunc: func(data any) jwt.MapClaims {
 			if v, ok := data.(*model.User); ok {
 				return jwt.MapClaims{
-					identityKey: v.Email,
+					identityKey: v.Email,   // email 仍然作为身份标识
+					"ID":    v.ID,      // 添加 userID 到令牌
 					"name":      v.Name,
 				}
 			}
 			return jwt.MapClaims{}
 		},
+		
 		IdentityHandler: func(c *gin.Context) any {
 			claims := jwt.ExtractClaims(c)
 			return &model.User{
+				ID:    uint(claims["ID"].(float64)), // 提取 userID 并转换为 uint 类型
 				Email: claims[identityKey].(string),
 				Name:  claims["name"].(string),
 			}
@@ -59,11 +62,11 @@ func init() {
 			return model.LoginByEmailAndPassword(email, password)
 		},
 		Authorizator: func(data any, c *gin.Context) bool {
-			if v, ok := data.(*model.User); ok && v.Name == "admin" {
-				return true
+			if _, ok := data.(*model.User); ok {
+				return true // 允许所有已登录用户访问
 			}
-
 			return false
+
 		},
 		Unauthorized: func(c *gin.Context, code int, message string) {
 			c.JSON(code, gin.H{
