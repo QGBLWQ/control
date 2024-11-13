@@ -39,7 +39,7 @@ func (ctrl *ChartController) ChartPie(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	scriptPath := filepath.Join(cwd, "controller", "draw_pie_chart.py")
+	scriptPath := filepath.Join(cwd, "controller/chartPyScripts", "draw_pie_chart.py")
 	cmd := exec.Command("python", scriptPath, string(paramsJSON))
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -92,7 +92,7 @@ func (ctrl *ChartController) ChartLine(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	scriptPath := filepath.Join(cwd, "controller", "draw_line_chart.py")
+	scriptPath := filepath.Join(cwd, "controller/chartPyScripts", "draw_line_chart.py")
 	cmd := exec.Command("python", scriptPath, string(paramsJSON))
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -145,7 +145,7 @@ func (ctrl *ChartController) ChartBar(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	scriptPath := filepath.Join(cwd, "controller", "draw_bar_chart.py")
+	scriptPath := filepath.Join(cwd, "controller/chartPyScripts", "draw_bar_chart.py")
 	cmd := exec.Command("python", scriptPath, string(paramsJSON))
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -202,7 +202,7 @@ func (ctrl *ChartController) ChartLineBarMixed(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	scriptPath := filepath.Join(cwd, "controller", "draw_line_bar_mixed_chart.py")
+	scriptPath := filepath.Join(cwd, "controller/chartPyScripts", "draw_line_bar_mixed_chart.py")
 	cmd := exec.Command("python", scriptPath, string(paramsJSON))
 	var out bytes.Buffer
 	var stderr bytes.Buffer
