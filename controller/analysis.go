@@ -44,7 +44,7 @@ func (ctrl *AnalysisController) AnalysisLinearRegress(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error processing data"})
 		return
 	}
-	scriptPath := filepath.Join(currentDir, "controller", "analysis", "linear_regression.py")
+	scriptPath := filepath.Join(currentDir, "controller", "AnalysisProcessPyScripts", "linear_regression.py")
 
 	cmd := exec.Command("python", scriptPath, string(jsonData))
 	output, err := cmd.CombinedOutput()
@@ -101,7 +101,7 @@ func (ctrl *AnalysisController) AnalysisARIMA(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error processing data"})
 		return
 	}
-	scriptPath := filepath.Join(currentDir, "controller", "analysis", "ARIMA.py")
+	scriptPath := filepath.Join(currentDir, "controller", "AnalysisProcessPyScripts", "ARIMA.py")
 
 	cmd := exec.Command("python", scriptPath, string(jsonData))
 	output, err := cmd.CombinedOutput()
@@ -157,7 +157,7 @@ func (ctrl *AnalysisController) AnalysisGreyPredict(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error processing data"})
 		return
 	}
-	scriptPath := filepath.Join(currentDir, "controller", "analysis", "grey_predict.py")
+	scriptPath := filepath.Join(currentDir, "controller", "AnalysisProcessPyScripts", "grey_predict.py")
 
 	cmd := exec.Command("python", scriptPath, string(jsonData))
 	output, err := cmd.CombinedOutput()
@@ -214,7 +214,7 @@ func (ctrl *AnalysisController) AnalysisBP(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error processing data"})
 		return
 	}
-	scriptPath := filepath.Join(currentDir, "controller", "analysis", "BP.py")
+	scriptPath := filepath.Join(currentDir, "controller", "AnalysisProcessPyScripts", "BP.py")
 
 	cmd := exec.Command("python", scriptPath, string(jsonData))
 	output, err := cmd.CombinedOutput()
@@ -267,7 +267,7 @@ func (ctrl *AnalysisController) AnalysisOverview(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error processing data"})
 		return
 	}
-	scriptPath := filepath.Join(currentDir, "controller", "analysis", "overall.py")
+	scriptPath := filepath.Join(currentDir, "controller", "AnalysisProcessPyScripts", "overall.py")
 
 	cmd := exec.Command("python", scriptPath, string(jsonData))
 	output, err := cmd.CombinedOutput()
