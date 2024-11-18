@@ -81,9 +81,9 @@ Enter the JSON data in the request body, for example:
 {
   "title": "Sample Mixed Chart",
   "line_data": [
-    {"x": A, "y": 10},
-    {"x": A, "y": 20},
-    {"x": A, "y": 30}
+    {"x": "A", "y": 10},
+    {"x": "B", "y": 20},
+    {"x": "C", "y": 30}
   ],
   "bar_data": [
     {"label": "A", "value": 10},
