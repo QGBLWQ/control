@@ -3,8 +3,8 @@ package controller
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"github.com/Heath000/fzuSE2024/config"
+	"github.com/gin-gonic/gin"
 )
 
 // IndexController is the default controller

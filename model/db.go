@@ -3,15 +3,15 @@ package model
 import (
 	"sync"
 
-	"github.com/gin-gonic/gin"
 	"github.com/Heath000/fzuSE2024/config"
+	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
-// DBInstance is a singleton DB instance
+// 定义了数据库实例的结构，而且被指定了单例，只会生成一次
 type DBInstance struct {
 	initializer func() any
 	instance    any

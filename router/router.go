@@ -1,6 +1,8 @@
 package router
 
 import (
+	"fmt"
+
 	"github.com/Heath000/fzuSE2024/controller"
 	"github.com/Heath000/fzuSE2024/middleware"
 	"github.com/Heath000/fzuSE2024/model"
@@ -10,6 +12,7 @@ import (
 
 // Route makes the routing
 func Route(app *gin.Engine) {
+	fmt.Println("Routes are registered")
 	indexController := new(controller.IndexController)
 	app.GET(
 		"/", indexController.GetIndex,
@@ -66,10 +69,12 @@ func Route(app *gin.Engine) {
 		analysis.POST("/grey_predict", analysisController.AnalysisGreyPredict)
 		analysis.POST("/ARIMA", analysisController.AnalysisARIMA)
 		analysis.POST("/BP", analysisController.AnalysisBP)
+		analysis.POST("/SVM", analysisController.AnalysisSVM)
+		analysis.POST("/RandomForest", analysisController.AnalysisRandomForest)
 	}
 
 	dataProcessingController := new(controller.DataProcessingController)
-	data := app.Group("/data")
+	data := app.Group("/dataProcessing")
 	{
 		data.POST("/standardize", dataProcessingController.DataStandalize)
 		data.POST("/outliers", dataProcessingController.DataOutliersHandle)
@@ -82,9 +87,27 @@ func Route(app *gin.Engine) {
 	queryController := new(controller.QueryController)
 	query := app.Group("/query")
 	{
-		query.GET("/region", queryController.QueryRegion)
-		query.GET("/category", queryController.QueryCategory)
-		query.GET("/basic_table", queryController.QueryBasicTable)
+		query.POST("/region", queryController.QueryRegions)
+		query.POST("/top_category", queryController.QueryTopCategories)
+		query.POST("/sub_category", queryController.QuerySubCategories)
+		query.POST("/available_year", queryController.QueryAvailableYears)
+		query.POST("/data", queryController.QueryData)
+
+	}
+	llmController := new(controller.LlmController)
+	llm := app.Group("/llm")
+	{
+		llm.POST("/report", llmController.GetReport)
+	}
+
+	fileController := new(controller.FileController)
+	file := app.Group("/file")
+	file.Use(authMiddleware.MiddlewareFunc()) // 所有文件相关的路由都需要鉴权
+	{
+		file.GET("/get_file_list", fileController.GetFileList)          // 获取文件列表
+		file.GET("/get_file/:file_id", fileController.GetFile)          // 获取单个文件
+		file.DELETE("/delete_file/:file_id", fileController.DeleteFile) // 删除文件
+		file.POST("/upload_file", fileController.UploadFile)            // 上传文件
 	}
 
 }
