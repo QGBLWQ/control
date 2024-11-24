@@ -97,6 +97,7 @@ func Route(app *gin.Engine) {
 	queryController := new(controller.QueryController)
 	query := app.Group("/query")
 	{
+		query.GET("/provinces", queryController.GetProvinceList)
 		query.POST("/region", queryController.QueryRegions)
 		query.POST("/top_category", queryController.QueryTopCategories)
 		query.POST("/sub_category", queryController.QuerySubCategories)
