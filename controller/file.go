@@ -53,6 +53,7 @@ func (f *FileController) GetFileList(c *gin.Context) {
 func (f *FileController) GetFile(c *gin.Context) {
 	// 从请求中获取文件ID
 	fileIDStr := c.Param("file_id")
+	filename := c.Param("filename")
 	fileID, err := strconv.ParseUint(fileIDStr, 10, 32)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -93,7 +94,7 @@ func (f *FileController) GetFile(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error processing data"})
 		return
 	}
-	filePath := filepath.Join(currentDir, "file")
+	filePath := filepath.Join(currentDir, "file", filename)
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"code":    404,
@@ -105,16 +106,13 @@ func (f *FileController) GetFile(c *gin.Context) {
 	// 返回文件内容
 	c.File(filePath)
 	// code ends here
-
-	c.JSON(http.StatusOK, gin.H{
-		"file": file,
-	})
 }
 
 // DeleteFile 删除文件
 func (f *FileController) DeleteFile(c *gin.Context) {
 	// 从请求中获取文件ID
 	fileIDStr := c.Param("file_id")
+	filename := c.Param("filename")
 	fileID, err := strconv.ParseUint(fileIDStr, 10, 32)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -153,25 +151,34 @@ func (f *FileController) DeleteFile(c *gin.Context) {
 		}
 		return
 	}
-
-	// 真正地删除服务器里面存的文件***********代码写在这里
-	// 构造文件路径
-	// 获取当前工作目录并拼接脚本路径
 	currentDir, err := os.Getwd()
 	if err != nil {
 		log.Println("Error getting current directory:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error processing data"})
 		return
 	}
-	filePath := filepath.Join(currentDir, "file")
+	filePath := filepath.Join(currentDir, "file", filename)
+
+	// 检查文件是否存在
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"code":    404,
+			"message": "File does not exist on server",
+		})
+		return
+	}
+
+	// 删除服务器中的文件
 	if err := os.Remove(filePath); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code":    500,
 			"message": "Failed to delete file from server",
 		})
+		log.Println("File deletion error:", err)
 		return
 	}
-	//code ends here
+
+	// 成功删除
 	c.JSON(http.StatusOK, gin.H{
 		"message": "File deleted successfully",
 	})
