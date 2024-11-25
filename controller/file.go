@@ -1,7 +1,10 @@
 package controller
 
 import (
+	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -83,6 +86,25 @@ func (f *FileController) GetFile(c *gin.Context) {
 	}
 
 	// 真正地获取服务器里的文件，然后发回****************
+	// 获取当前工作目录并拼接脚本路径
+	currentDir, err := os.Getwd()
+	if err != nil {
+		log.Println("Error getting current directory:", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error processing data"})
+		return
+	}
+	filePath := filepath.Join(currentDir, "file")
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"code":    404,
+			"message": "File not found on server",
+		})
+		return
+	}
+
+	// 返回文件内容
+	c.File(filePath)
+	// code ends here
 
 	c.JSON(http.StatusOK, gin.H{
 		"file": file,
@@ -133,7 +155,23 @@ func (f *FileController) DeleteFile(c *gin.Context) {
 	}
 
 	// 真正地删除服务器里面存的文件***********代码写在这里
-
+	// 构造文件路径
+	// 获取当前工作目录并拼接脚本路径
+	currentDir, err := os.Getwd()
+	if err != nil {
+		log.Println("Error getting current directory:", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error processing data"})
+		return
+	}
+	filePath := filepath.Join(currentDir, "file")
+	if err := os.Remove(filePath); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "Failed to delete file from server",
+		})
+		return
+	}
+	//code ends here
 	c.JSON(http.StatusOK, gin.H{
 		"message": "File deleted successfully",
 	})
@@ -163,6 +201,27 @@ func (f *FileController) UploadFile(c *gin.Context) {
 	}
 
 	// 真正地将文件保存到服务器的指定路径********************** 代码写在这里
+
+	// 定义文件存储路径
+	// 获取当前工作目录并拼接脚本路径
+	currentDir, err := os.Getwd()
+	if err != nil {
+		log.Println("Error getting current directory:", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error processing data"})
+		return
+	}
+	uploadPath := filepath.Join(currentDir, "file")
+	fullPath := uploadPath + file.Filename
+
+	// 保存文件到指定路径
+	if err := c.SaveUploadedFile(file, fullPath); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "Failed to save file to server",
+		})
+		return
+	}
+	//code ends here
 
 	// 在数据库中保存文件记录
 	fileInfo := model.File{
