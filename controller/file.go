@@ -53,7 +53,7 @@ func (f *FileController) GetFileList(c *gin.Context) {
 func (f *FileController) GetFile(c *gin.Context) {
 	// 从请求中获取文件ID
 	fileIDStr := c.Param("file_id")
-	filename := c.Param("filename")
+	//filename := c.Param("filename")
 	fileID, err := strconv.ParseUint(fileIDStr, 10, 32)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -94,7 +94,7 @@ func (f *FileController) GetFile(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error processing data"})
 		return
 	}
-	filePath := filepath.Join(currentDir, "file", filename)
+	filePath := filepath.Join(currentDir, "file", fileID)
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"code":    404,
@@ -112,7 +112,7 @@ func (f *FileController) GetFile(c *gin.Context) {
 func (f *FileController) DeleteFile(c *gin.Context) {
 	// 从请求中获取文件ID
 	fileIDStr := c.Param("file_id")
-	filename := c.Param("filename")
+	//filename := c.Param("filename")
 	fileID, err := strconv.ParseUint(fileIDStr, 10, 32)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -157,7 +157,7 @@ func (f *FileController) DeleteFile(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error processing data"})
 		return
 	}
-	filePath := filepath.Join(currentDir, "file", filename)
+	filePath := filepath.Join(currentDir, "file", fileID)
 
 	// 检查文件是否存在
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
@@ -208,7 +208,12 @@ func (f *FileController) UploadFile(c *gin.Context) {
 	}
 
 	// 真正地将文件保存到服务器的指定路径********************** 代码写在这里
-
+	// 在数据库中保存文件记录
+	fileInfo := model.File{
+		UserID:     userID,
+		Filename:   file.Filename,
+		UploadTime: time.Now(), // 假设 UploadTime 自动设置
+	}
 	// 定义文件存储路径
 	// 获取当前工作目录并拼接脚本路径
 	currentDir, err := os.Getwd()
@@ -218,7 +223,7 @@ func (f *FileController) UploadFile(c *gin.Context) {
 		return
 	}
 	uploadPath := filepath.Join(currentDir, "file")
-	fullPath := uploadPath + file.Filename
+	fullPath := uploadPath + file.FileID
 
 	// 保存文件到指定路径
 	if err := c.SaveUploadedFile(file, fullPath); err != nil {
@@ -230,12 +235,6 @@ func (f *FileController) UploadFile(c *gin.Context) {
 	}
 	//code ends here
 
-	// 在数据库中保存文件记录
-	fileInfo := model.File{
-		UserID:     userID,
-		Filename:   file.Filename,
-		UploadTime: time.Now(), // 假设 UploadTime 自动设置
-	}
 	if err := fileInfo.PostFileInfo(userID, file.Filename); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Failed to save file information in database",
